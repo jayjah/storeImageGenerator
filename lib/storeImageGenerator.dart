@@ -74,19 +74,19 @@ Future<void> main(List<String> args) async {
     //parse images
 
     if (onlyAndroidImages) {
-      await parseImages(androidDevices, images, outputPath);
+      await convertImages(androidDevices, images, outputPath);
     } else if (onlyIosImages) {
-      await parseImages(iosDevices, images, outputPath);
+      await convertImages(iosDevices, images, outputPath);
     } else {
-      await parseImages(iosDevices, images, outputPath);
-      await parseImages(androidDevices, images, outputPath);
+      await convertImages(iosDevices, images, outputPath);
+      await convertImages(androidDevices, images, outputPath);
     }
     print(green('\n Work done - all images converted - exit \n'));
     exit(0);
   }
 }
 
-Future<void> parseImages(
+Future<void> convertImages(
     List<Device> devices, List<String> images, String outputPath) async {
   int counter = 0;
   try {
@@ -106,7 +106,7 @@ Future<void> parseImages(
       }
     }
   } catch (e) {
-    print(red('!ERROR! by parsing images \n $e \n'));
+    print(red('!ERROR! at converting images \n $e \n'));
   }
   return;
 }
