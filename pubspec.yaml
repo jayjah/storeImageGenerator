@@ -1,5 +1,5 @@
 name: storeImageGenerator
-version: 0.0.1
+version: 0.0.2
 description: A script to generate app store / play store images
 author: Markus Krebs <markuskrebs93@gmail.com>
 environment: 

@@ -55,8 +55,8 @@ Future<void> main(List<String> args) async {
   final outputDir = Directory(outputPath);
   if (outputDir.existsSync()) {
     outputDir.deleteSync(recursive: true);
-    outputDir.createSync();
   }
+  outputDir.createSync();
 
   // get images from input directory
   final List<String> images =
