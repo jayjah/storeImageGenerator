@@ -38,10 +38,10 @@ Future<void> main(List<String> args) async {
   );
   final parsed = parser.parse(args);
   if (parsed.wasParsed('verbose')) {
-    Settings().setVerbose(enabled: true);
+    Settings().setVerbose(bool: true);
   }
-  bool onlyIosImages = false;
-  bool onlyAndroidImages = false;
+  var onlyIosImages = false;
+  var onlyAndroidImages = false;
   if (parsed.wasParsed('android')) {
     onlyAndroidImages = true;
   } else if (parsed.wasParsed('ios')) {
@@ -59,8 +59,8 @@ Future<void> main(List<String> args) async {
   outputDir.createSync();
 
   // get images from input directory
-  final List<String> images =
-      find('*.*', root: inputPath, types: [Find.file]).toList();
+  final images =
+      find('*.*', workingDirectory: inputPath, types: [Find.file]).toList();
 
   if (images == null || images.isEmpty) {
     print(red('!ERROR! No files found in $inputPath \n'));
@@ -88,7 +88,7 @@ Future<void> main(List<String> args) async {
 
 Future<void> convertImages(
     List<Device> devices, List<String> images, String outputPath) async {
-  int counter = 0;
+  var counter = 0;
   try {
     for (final device in devices) {
       for (final image in images) {
@@ -97,7 +97,7 @@ Future<void> convertImages(
         final newImg =
             copyResize(img, width: device.width, height: device.height);
         File('$outputPath${device.name}-$counter.jpg')
-          ..writeAsBytesSync(encodeJpg(newImg));
+            .writeAsBytesSync(encodeJpg(newImg));
 
         await Future<void>.delayed(const Duration(milliseconds: 20));
         print(green(
