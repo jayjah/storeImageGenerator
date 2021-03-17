@@ -38,7 +38,7 @@ Future<void> main(List<String> args) async {
   );
   final parsed = parser.parse(args);
   if (parsed.wasParsed('verbose')) {
-    Settings().setVerbose(bool: true);
+    Settings().setVerbose(enabled: true);
   }
   var onlyIosImages = false;
   var onlyAndroidImages = false;
@@ -62,7 +62,7 @@ Future<void> main(List<String> args) async {
   final images =
       find('*.*', workingDirectory: inputPath, types: [Find.file]).toList();
 
-  if (images == null || images.isEmpty) {
+  if (images.isEmpty) {
     print(red('!ERROR! No files found in $inputPath \n'));
     exit(1);
   } else {
@@ -93,7 +93,9 @@ Future<void> convertImages(
     for (final device in devices) {
       for (final image in images) {
         final img = decodeImage(File(image).readAsBytesSync());
-
+        if (img == null) {
+          continue;
+        }
         final newImg =
             copyResize(img, width: device.width, height: device.height);
         File('$outputPath${device.name}-$counter.jpg')
