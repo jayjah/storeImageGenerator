@@ -13,6 +13,7 @@ dependencies:
 # dev dependencies
 dev_dependencies: 
   pedantic: ^1.11.1
+  test: any
 
 # dart scripts
 executables:
