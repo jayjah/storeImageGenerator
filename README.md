@@ -1,4 +1,4 @@
-![Dart](https://img.shields.io/badge/Dart-2.12.2-green)
+![Dart](https://img.shields.io/badge/Dart-2.13.0-green)
 
 # Generate store images/screenshots
     reads files from PROJECTDIR/input directory, converts to given size, declared in lib/devices.dart, and export files as .jpg format to 

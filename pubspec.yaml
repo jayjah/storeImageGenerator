@@ -6,13 +6,13 @@ environment:
   sdk: '>=2.12.0'
 # dependencies
 dependencies: 
-  args: ^2.0.0
-  dcli: ^0.51.5
+  args: ^2.2.0
+  dcli: ^1.7.1
   path: ^1.8.0
-  image: ^3.0.1
+  image: ^3.0.2
 # dev dependencies
 dev_dependencies: 
-  pedantic: ^1.11.0
+  pedantic: ^1.11.1
 
 # dart scripts
 executables:
