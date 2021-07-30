@@ -7,6 +7,7 @@ import 'package:test/test.dart';
 
 Future<void> main() async {
   test('Generate store icons', () async {
+    // ensure current path is the project directory while executing this test
     const outputPath = './output/';
     const inputPath = './test';
     const imagesToGenerate = [...devices.androidDevices, ...devices.iosDevices];
