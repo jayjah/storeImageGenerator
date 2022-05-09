@@ -1,11 +1,11 @@
-import 'dart:io';
+import 'dart:io' show Directory;
 
 import 'package:dcli/dcli.dart';
 import 'package:storeImageGenerator/image_generator.dart' as gen;
 import 'package:test/test.dart';
 
 Future<void> main() async {
-  test('Generate store icons', () async {
+  test('Generate store icons test', () async {
     // ensure current path is the project directory while executing this test
     const outputPath = './output/';
     const inputPath = './test';

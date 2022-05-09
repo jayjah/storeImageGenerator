@@ -1,78 +1,80 @@
-#! /usr/bin/env dcli
-
 library image_generator;
 
-import 'dart:io';
+import 'dart:io' show File, Directory, exit;
 
 import 'package:dcli/dcli.dart';
 import 'package:image/image.dart';
 part 'devices.dart';
 
 Future<void> main(List<String> args) async {
-  // check for cli arguments
-  final parser = ArgParser();
-  parser.addFlag(
-    'verbose',
-    abbr: 'v',
-    negatable: false,
-    help: 'Logs additional details to the cli',
-  );
-  parser.addFlag(
-    'android',
-    abbr: 'a',
-    negatable: false,
-    help: 'Convert images only to android play store',
-  );
-  parser.addFlag(
-    'ios',
-    abbr: 'i',
-    negatable: false,
-    help: 'Convert images only to ios app store',
-  );
-
-  final parsed = parser.parse(args);
-  if (parsed.wasParsed('verbose')) {
-    Settings().setVerbose(enabled: true);
-  }
-  var onlyIosImages = false;
-  var onlyAndroidImages = false;
-  if (parsed.wasParsed('android')) {
-    onlyAndroidImages = true;
-  } else if (parsed.wasParsed('ios')) {
-    onlyIosImages = true;
-  }
-
+  // input & output directories are used for this script
   const inputPath = './input/';
   const outputPath = './output/';
 
+  // create argument parser and parse given arguments
+  final parser = ArgParser()
+    ..addFlag(
+      'verbose',
+      abbr: 'v',
+      negatable: false,
+      help: 'Logs additional details',
+    )
+    ..addFlag(
+      'android',
+      abbr: 'a',
+      negatable: false,
+      help: 'Convert images only to android devices',
+    )
+    ..addFlag(
+      'ios',
+      abbr: 'i',
+      negatable: false,
+      help: 'Convert images only to ios devices',
+    );
+  final parsed = parser.parse(args);
+
+  // check for passed flags
+  Settings().setVerbose(enabled: parsed.wasParsed('verbose'));
+  final onlyIosImages = parsed.wasParsed('ios');
+  final onlyAndroidImages = parsed.wasParsed('android');
+
+  // create output directory
   createDirectory(outputPath);
 
   // get images from input directory
-  final images =
-      find('*.*', workingDirectory: inputPath, types: [Find.file]).toList();
-
+  final images = find(
+    '*.*',
+    workingDirectory: inputPath,
+    types: [Find.file],
+  ).toList();
   if (images.isEmpty) {
-    print(red('!ERROR! No files found in $inputPath \n'));
+    print(
+      red('!ERROR! No files found in $inputPath \n'),
+    );
     exit(1);
-  } else {
-    print(green('Total images found: ${images.length} \n'));
-    if (Settings().isVerbose) {
-      images.forEach((image) => print(green('$image')));
-    }
-
-    //parse images
-
-    if (onlyAndroidImages) {
-      await convertImages(androidDevices, images, outputPath);
-    } else if (onlyIosImages) {
-      await convertImages(iosDevices, images, outputPath);
-    } else {
-      await convertImages(iosDevices, images, outputPath);
-      await convertImages(androidDevices, images, outputPath);
-    }
-    print(green('\n Work done - all images converted - exit \n'));
-    exit(0);
   }
+
+  // print some debug stuff
+  print(
+    green('Total images found: ${images.length} \n'),
+  );
+  if (Settings().isVerbose) {
+    images.forEach(print);
+  }
+
+  // convert images
+  if (onlyAndroidImages) {
+    await convertImages(androidDevices, images, outputPath);
+    return exitScript();
+  }
+  if (onlyIosImages) {
+    await convertImages(iosDevices, images, outputPath);
+    return exitScript();
+  }
+
+  await convertImages(iosDevices, images, outputPath);
+  await convertImages(androidDevices, images, outputPath);
+  return exitScript();
 }
 
 // delete dir if exist and creates new one -> removes old images
@@ -84,29 +86,54 @@ void createDirectory(String outputPath) {
   outputDir.createSync();
 }
 
+// converts images each image to each device
 Future<void> convertImages(
     List<Device> devices, List<String> images, String outputPath) async {
+  const waitingTime = Duration(milliseconds: 20);
   var counter = 0;
   try {
     for (final device in devices) {
       for (final image in images) {
-        final img = decodeImage(File(image).readAsBytesSync());
+        final img = decodeImage(
+          File(image).readAsBytesSync(),
+        );
         if (img == null) {
+          print(
+            '!ERROR! at decoding image :: $image could not be decoded - SKIPPING',
+          );
           continue;
         }
-        final newImg =
-            copyResize(img, width: device.width, height: device.height);
-        File('$outputPath${device.name}-$counter.jpg')
-            .writeAsBytesSync(encodeJpg(newImg));
+        final newImg = copyResize(
+          img,
+          width: device.width,
+          height: device.height,
+        );
+        File('$outputPath${device.name}-$counter.jpg').writeAsBytesSync(
+          encodeJpg(newImg),
+        );
 
-        await Future<void>.delayed(const Duration(milliseconds: 20));
-        print(green(
-            'Image generated: $outputPath${device.name}-$counter.jpg \n'));
+        await Future<void>.delayed(waitingTime);
+
+        print(
+          green('Image generated: $outputPath${device.name}-$counter.jpg \n'),
+        );
         counter++;
       }
     }
   } catch (e) {
-    print(red('!ERROR! at converting images \n $e \n'));
+    print(
+      red('!ERROR! at converting images: $e \n'),
+    );
   }
-  return;
+  print(
+    'Images to convert: ${devices.length * images.length} :: Converted images: $counter',
+  );
+}
+
+// finish
+void exitScript() {
+  print(
+    green('\n Work done - exit \n'),
+  );
+  exit(0);
 }

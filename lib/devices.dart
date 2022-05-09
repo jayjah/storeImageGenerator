@@ -13,16 +13,17 @@ const iosDevices = <IosDevice>[
   IosDevice(2224, 1668, '10.5 inch iPad'),
   IosDevice(2008, 1536, '9.7 inch iPad')
 ];
-// android device size from: https://support.google.com/googleplay/android-developer/answer/9866151?hl=en
-const androidDevices = <AndroidDevice>[
-  AndroidDevice(2280, 1080, 'android-phone'),
-  AndroidDevice(2732, 2048, 'android-tablet')
-];
 
 class IosDevice extends Device {
   const IosDevice(int height, int width, String name)
       : super(height, width, name);
 }
+
+// android device size from: https://support.google.com/googleplay/android-developer/answer/9866151?hl=en
+const androidDevices = <AndroidDevice>[
+  AndroidDevice(2280, 1080, 'android-phone'),
+  AndroidDevice(2732, 2048, 'android-tablet')
+];
 
 class AndroidDevice extends Device {
   const AndroidDevice(int height, int width, String name)
@@ -31,11 +32,9 @@ class AndroidDevice extends Device {
 
 abstract class Device {
   const Device(this.height, this.width, this.name);
-
   final int height;
   final int width;
   final String name;
-
   @override
   String toString() => '$name --- $width x $height';
 }

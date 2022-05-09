@@ -1,14 +1,11 @@
 name: storeImageGenerator
-version: 0.0.3
+version: 0.1.0
 description: A script to generate app store / play store images
-author: Markus Krebs <markuskrebs93@gmail.com>
-environment: 
+environment:
   sdk: '>=2.12.0'
 # dependencies
 dependencies: 
-  args: ^2.3.0
   dcli: ^1.30.2
-  path: ^1.8.1
   image: ^3.1.3
 # dev dependencies
 dev_dependencies: 
@@ -17,5 +14,4 @@ dev_dependencies:
 
 # dart scripts
 executables:
-  # start local http dart_backend server
   storeImageGen: storeImageGenerator
