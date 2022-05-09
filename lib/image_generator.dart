@@ -1,10 +1,12 @@
 #! /usr/bin/env dcli
 
+library image_generator;
+
 import 'dart:io';
 
 import 'package:dcli/dcli.dart';
 import 'package:image/image.dart';
-import 'package:storeImageGenerator/devices.dart';
+part 'devices.dart';
 
 Future<void> main(List<String> args) async {
   // check for cli arguments
@@ -27,6 +29,7 @@ Future<void> main(List<String> args) async {
     negatable: false,
     help: 'Convert images only to ios app store',
   );
+
   final parsed = parser.parse(args);
   if (parsed.wasParsed('verbose')) {
     Settings().setVerbose(enabled: true);

@@ -1,3 +1,5 @@
+part of 'image_generator.dart';
+
 // ios device size from: https://help.apple.com/app-store-connect/#/devd274dd925
 const iosDevices = <IosDevice>[
   IosDevice(2778, 1284, '6.5 inch iPhone'),
