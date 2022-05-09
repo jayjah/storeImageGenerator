@@ -63,24 +63,27 @@ Future<void> main(List<String> args) async {
   }
 
   // convert images
-  if (onlyAndroidImages) {
-    await convertImages(androidDevices, images, outputPath);
-    return exitScript();
-  }
-  if (onlyIosImages) {
-    await convertImages(iosDevices, images, outputPath);
-    return exitScript();
-  }
+  await convertImages(
+    [
+      if (!onlyAndroidImages) ...iosDevices,
+      if (!onlyIosImages) ...androidDevices,
+    ],
+    images,
+    outputPath,
+  );
 
-  await convertImages(iosDevices, images, outputPath);
-  await convertImages(androidDevices, images, outputPath);
-  return exitScript();
+  // finish
+  print(
+    green('\n Work done - exit \n'),
+  );
+  exit(0);
 }
 
 // delete dir if exist and creates new one -> removes old images
 void createDirectory(String outputPath) {
   final outputDir = Directory(outputPath);
   if (outputDir.existsSync()) {
+    print('Deleting $outputPath directory ...');
     outputDir.deleteSync(recursive: true);
   }
   outputDir.createSync();
@@ -88,7 +91,10 @@ void createDirectory(String outputPath) {
 
 // converts images each image to each device
 Future<void> convertImages(
-    List<Device> devices, List<String> images, String outputPath) async {
+  List<Device> devices,
+  List<String> images,
+  String outputPath,
+) async {
   const waitingTime = Duration(milliseconds: 20);
   var counter = 0;
   try {
@@ -115,7 +121,7 @@ Future<void> convertImages(
         await Future<void>.delayed(waitingTime);
 
         print(
-          green('Image generated: $outputPath${device.name}-$counter.jpg \n'),
+          green('Image generated: $outputPath${device.name}-$counter.jpg'),
         );
         counter++;
       }
@@ -128,12 +134,4 @@ Future<void> convertImages(
   print(
     'Images to convert: ${devices.length * images.length} :: Converted images: $counter',
   );
-}
-
-// finish
-void exitScript() {
-  print(
-    green('\n Work done - exit \n'),
-  );
-  exit(0);
 }
