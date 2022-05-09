@@ -1,0 +1,18 @@
+version: 2
+enable-beta-ecosystems: true
+updates:
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    #allow:
+      # Allow both direct updates for all packages
+    #  - dependency-type: "direct"
+    # Specify labels pull requests
+    labels:
+      - "dependencies"
+    # Add reviewers
+    reviewers:
+      - "jayjah"
+    # Allow up to 10 open pull requests for pub dependencies
+    open-pull-requests-limit: 10
