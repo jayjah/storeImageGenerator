@@ -77,7 +77,7 @@ Future<void> main(List<String> args) async {
   }
 
   // convert images
-  await convertImages(
+  await generateImages(
     <Device>[
       if (!onlyAndroidImages && !onlyAndroidTabletImages) ...[
         if (onlyIosTabletImages)
@@ -112,7 +112,7 @@ void createDirectory(String outputPath) {
 }
 
 // converts images each image to each device
-Future<void> convertImages(
+Future<void> generateImages(
   List<Device> devices,
   List<String> images,
   String outputPath,

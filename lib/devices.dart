@@ -57,22 +57,6 @@ const iosTabletDevices = <IosTabletDevice>[
   ),
 ];
 
-class IosDevice extends Device {
-  const IosDevice({
-    required super.height,
-    required super.width,
-    required super.name,
-  });
-}
-
-class IosTabletDevice extends TabletDevice {
-  const IosTabletDevice({
-    required super.height,
-    required super.width,
-    required super.name,
-  });
-}
-
 // android device size from: https://support.google.com/googleplay/android-developer/answer/9866151?hl=en
 const androidDevices = <AndroidDevice>[
   AndroidDevice(
@@ -89,6 +73,22 @@ const androidTabletDevices = <AndroidTabletDevice>[
     name: 'android-tablet',
   ),
 ];
+
+class IosDevice extends Device {
+  const IosDevice({
+    required super.height,
+    required super.width,
+    required super.name,
+  });
+}
+
+class IosTabletDevice extends TabletDevice {
+  const IosTabletDevice({
+    required super.height,
+    required super.width,
+    required super.name,
+  });
+}
 
 class AndroidDevice extends Device {
   const AndroidDevice({
@@ -107,12 +107,19 @@ class AndroidTabletDevice extends TabletDevice {
 }
 
 abstract class TabletDevice extends Device {
-  const TabletDevice(
-      {required super.height, required super.width, required super.name});
+  const TabletDevice({
+    required super.height,
+    required super.width,
+    required super.name,
+  });
 }
 
 abstract class Device {
-  const Device({required this.height, required this.width, required this.name});
+  const Device({
+    required this.height,
+    required this.width,
+    required this.name,
+  });
   final int height;
   final int width;
   final String name;
