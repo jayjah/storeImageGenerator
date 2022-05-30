@@ -26,17 +26,31 @@ Future<void> main(List<String> args) async {
       help: 'Convert images only to android devices',
     )
     ..addFlag(
+      'androidtablet',
+      //abbr: 'at',
+      negatable: false,
+      help: 'Convert images only to android tablet devices',
+    )
+    ..addFlag(
       'ios',
       abbr: 'i',
       negatable: false,
       help: 'Convert images only to ios devices',
+    )
+    ..addFlag(
+      'iostablet',
+      //abbr: 'it',
+      negatable: false,
+      help: 'Convert images only to ios tablet devices',
     );
-  final parsed = parser.parse(args);
+  final parsedArgs = parser.parse(args);
 
   // check for passed flags
-  Settings().setVerbose(enabled: parsed.wasParsed('verbose'));
-  final onlyIosImages = parsed.wasParsed('ios');
-  final onlyAndroidImages = parsed.wasParsed('android');
+  Settings().setVerbose(enabled: parsedArgs.wasParsed('verbose'));
+  final onlyIosImages = parsedArgs.wasParsed('ios');
+  final onlyIosTabletImages = parsedArgs.wasParsed('iostablet');
+  final onlyAndroidImages = parsedArgs.wasParsed('android');
+  final onlyAndroidTabletImages = parsedArgs.wasParsed('androidtablet');
 
   // create output directory
   createDirectory(outputPath);
@@ -64,9 +78,17 @@ Future<void> main(List<String> args) async {
 
   // convert images
   await convertImages(
-    [
-      if (!onlyAndroidImages) ...iosDevices,
-      if (!onlyIosImages) ...androidDevices,
+    <Device>[
+      if (!onlyAndroidImages && !onlyAndroidTabletImages) ...[
+        if (onlyIosTabletImages)
+          ...iosTabletDevices
+        else ...[...iosDevices, ...iosTabletDevices],
+      ],
+      if (!onlyIosImages && !onlyIosTabletImages) ...[
+        if (onlyAndroidTabletImages)
+          ...androidTabletDevices
+        else ...[...androidDevices, ...androidTabletDevices],
+      ],
     ],
     images,
     outputPath,
