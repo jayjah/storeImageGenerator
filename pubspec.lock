@@ -119,14 +119,14 @@ packages:
       name: dcli
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.30.2"
+    version: "1.31.2"
   dcli_core:
     dependency: transitive
     description:
       name: dcli_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.30.2"
+    version: "1.31.2"
   equatable:
     dependency: transitive
     description:
@@ -329,7 +329,7 @@ packages:
       name: pubspec
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.0"
   quiver:
     dependency: transitive
     description:
@@ -539,7 +539,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.2"
+    version: "2.6.1"
   xml:
     dependency: transitive
     description:
