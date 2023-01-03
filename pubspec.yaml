@@ -6,7 +6,7 @@ environment:
 # dependencies
 dependencies: 
   dcli: ^1.31.2
-  image: ^3.2.0
+  image: ">=3.2.0 <5.0.0"
 # dev dependencies
 dev_dependencies: 
   pedantic: ^1.11.1
