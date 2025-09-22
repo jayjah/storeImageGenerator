@@ -2,6 +2,7 @@ library image_generator;
 
 import 'dart:io' show File, Directory, exit;
 
+import 'package:args/args.dart';
 import 'package:dcli/dcli.dart';
 import 'package:image/image.dart';
 part 'devices.dart';

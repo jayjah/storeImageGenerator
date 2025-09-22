@@ -70,7 +70,12 @@ const androidTabletDevices = <AndroidTabletDevice>[
   AndroidTabletDevice(
     height: 2732,
     width: 2048,
-    name: 'android-tablet',
+    name: 'android-tablet-10',
+  ),
+  AndroidTabletDevice(
+    height: 1024,
+    width: 600,
+    name: 'android-tablet-7',
   ),
 ];
 
